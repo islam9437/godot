@@ -47,12 +47,16 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    z-index: 1; /* чтобы кнопка находилась над подложкой */
   }
   .playbutton p {
     color: #fff;
     font-size: 28px;
     padding-top: 10%;
     margin: 0;
+  }
+  #v3d-container {
+    position: relative; /* чтобы можно было позиционировать относительно него */
   }
 </style>
 </head>
@@ -66,6 +70,7 @@
 
 <script>
   function startGame() {
+    document.getElementById("hideContent").style.display = "none";
     // Ваш код для запуска игры
     alert("Игра запущена!");
   }
