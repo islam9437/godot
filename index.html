@@ -48,6 +48,7 @@
     align-items: center;
     flex-direction: column;
     z-index: 1; /* чтобы кнопка находилась над подложкой */
+    transition: opacity 0.5s; /* добавляем плавный переход */
   }
   .playbutton p {
     color: #fff;
@@ -70,7 +71,11 @@
 
 <script>
   function startGame() {
-    document.getElementById("hideContent").style.display = "none";
+    document.getElementById("hideContent").style.opacity = "0"; // изменяем opacity на 0
+    setTimeout(function(){ // добавляем небольшую задержку перед скрытием, чтобы пользователь увидел анимацию
+      document.getElementById("hideContent").style.display = "none"; // после анимации скрываем элемент
+    }, 500); // 500 миллисекунд (0.5 секунды)
+    
     // Ваш код для запуска игры
     alert("Игра запущена!");
   }
