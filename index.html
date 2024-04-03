@@ -71,6 +71,7 @@
 
 <script>
   function startGame() {
+    console.log("Нажата кнопка начала игры"); // Выводим сообщение в консоль
     document.getElementById("hideContent").style.opacity = "0"; // изменяем opacity на 0
     setTimeout(function(){ // добавляем небольшую задержку перед скрытием, чтобы пользователь увидел анимацию
       document.getElementById("hideContent").style.display = "none"; // после анимации скрываем элемент
