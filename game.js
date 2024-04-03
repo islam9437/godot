@@ -98,13 +98,13 @@ titleScreen.prototype = {
         middleground.tilePosition.x -= .6;
 
     },
-    //startGame: function () {
-        //if (this.state == 1) {
-            //this.state = 2;
-            //this.title2 = game.add.image(game.width / 2, 0, 'instructions');
-            //this.title2.anchor.setTo(0.5, 0);
-            //this.title.destroy();
-        //} else {
+    startGame: function () {
+        if (this.state == 1) {
+            this.state = 2;
+            this.title2 = game.add.image(game.width / 2, 0, 'instructions');
+            this.title2.anchor.setTo(0.5, 0);
+            this.title.destroy();
+        } else {
             this.game.state.start('PlayGame');
         }
 
