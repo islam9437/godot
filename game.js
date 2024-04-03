@@ -1,10 +1,3 @@
-/*
- * SUNNY LAND Demo Code
- * @copyright    2017 Ansimuz
- * @license      {@link https://opensource.org/licenses/MIT | MIT License}
- * Get free assets and code at: www.pixelgameart.org
- * */
-
 var game;
 var background;
 var middleground;
@@ -53,7 +46,6 @@ preload.prototype = {
         game.load.image('title', 'assets/sprites/title-screen.png');
         game.load.image('enter', 'assets/sprites/press-enter-text.png');
         game.load.image('credits', 'assets/sprites/credits-text.png');
-        //game.load.image('instructions', 'assets/sprites/instructions.png');
         // environment
         game.load.image('background', 'assets/environment/back.png');
         game.load.image('middleground', 'assets/environment/middle.png');
@@ -106,13 +98,13 @@ titleScreen.prototype = {
         middleground.tilePosition.x -= .6;
 
     },
-    startGame: function () {
-        if (this.state == 1) {
-            this.state = 2;
+    //startGame: function () {
+        //if (this.state == 1) {
+            //this.state = 2;
             //this.title2 = game.add.image(game.width / 2, 0, 'instructions');
-            this.title2.anchor.setTo(0.5, 0);
-            this.title.destroy();
-        } else {
+            //this.title2.anchor.setTo(0.5, 0);
+            //this.title.destroy();
+        //} else {
             this.game.state.start('PlayGame');
         }
 
