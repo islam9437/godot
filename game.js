@@ -34,29 +34,29 @@ boot.prototype = {
     }
 }
 
-//var preload = function (game) {
-//};
-//preload.prototype = {
-    //preload: function () {
+var preload = function (game) {
+};
+preload.prototype = {
+    preload: function () {
 
-        //var loadingBar = this.add.sprite(game.width / 2, game.height / 2, 'loading');
-        //loadingBar.anchor.setTo(0.5);
-       // game.load.setPreloadSprite(loadingBar);
+        var loadingBar = this.add.sprite(game.width / 2, game.height / 2, 'loading');
+        loadingBar.anchor.setTo(0.5);
+        game.load.setPreloadSprite(loadingBar);
         // load title screen
-        //game.load.image('title', 'assets/sprites/title-screen.png');
-        //game.load.image('enter', 'assets/sprites/press-enter-text.png');
+        game.load.image('title', 'assets/sprites/title-screen.png');
+        game.load.image('enter', 'assets/sprites/press-enter-text.png');
         // environment
-        //game.load.image('background', 'assets/environment/back.png');
-        //game.load.image('middleground', 'assets/environment/middle.png');
+        game.load.image('background', 'assets/environment/back.png');
+        game.load.image('middleground', 'assets/environment/middle.png');
         //tileset
-        //game.load.image('tileset', 'assets/environment/tileset.png');
-        //game.load.tilemap('map', 'assets/maps/map.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.image('tileset', 'assets/environment/tileset.png');
+        game.load.tilemap('map', 'assets/maps/map.json', null, Phaser.Tilemap.TILED_JSON);
         // atlas sprites
-        //game.load.atlasJSONArray('atlas', 'assets/atlas/atlas.png', 'assets/atlas/atlas.json');
-        //game.load.atlasJSONArray('atlas-props', 'assets/atlas/atlas-props.png', 'assets/atlas/atlas-props.json');
+        game.load.atlasJSONArray('atlas', 'assets/atlas/atlas.png', 'assets/atlas/atlas.json');
+        game.load.atlasJSONArray('atlas-props', 'assets/atlas/atlas-props.png', 'assets/atlas/atlas-props.json');
 		//
-		//game.load.audio('music', ['assets/sound/platformer_level03_loop.ogg']);
-    //},
+		game.load.audio('music', ['assets/sound/platformer_level03_loop.ogg']);
+    },
     create: function () {
         this.game.state.start('TitleScreen');
     }
