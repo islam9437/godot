@@ -42,20 +42,20 @@ preload.prototype = {
         var loadingBar = this.add.sprite(game.width / 2, game.height / 2, 'loading');
         loadingBar.anchor.setTo(0.5);
         game.load.setPreloadSprite(loadingBar);
-        // load title screen
-        game.load.image('title', 'assets/sprites/title-screen.png');
+
+	game.load.image('title', 'assets/sprites/title-screen.png');
         game.load.image('enter', 'assets/sprites/press-enter-text.png');
-        // environment
-        game.load.image('background', 'assets/environment/back.png');
+
+	game.load.image('background', 'assets/environment/back.png');
         game.load.image('middleground', 'assets/environment/middle.png');
-        //tileset
-        game.load.image('tileset', 'assets/environment/tileset.png');
+
+	game.load.image('tileset', 'assets/environment/tileset.png');
         game.load.tilemap('map', 'assets/maps/map.json', null, Phaser.Tilemap.TILED_JSON);
-        // atlas sprites
-        game.load.atlasJSONArray('atlas', 'assets/atlas/atlas.png', 'assets/atlas/atlas.json');
+
+	game.load.atlasJSONArray('atlas', 'assets/atlas/atlas.png', 'assets/atlas/atlas.json');
         game.load.atlasJSONArray('atlas-props', 'assets/atlas/atlas-props.png', 'assets/atlas/atlas-props.json');
-		//
-		game.load.audio('music', ['assets/sound/platformer_level03_loop.ogg']);
+		
+	game.load.audio('music', ['assets/sound/platformer_level03_loop.ogg']);
     },
     create: function () {
         this.game.state.start('TitleScreen');
@@ -123,7 +123,7 @@ playGame.prototype = {
         game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
         this.populateWorld();
 		
-		// music
+		//музыка
         this.music = game.add.audio('music');
         this.music.loop = true;
         this.music.play();
@@ -155,36 +155,32 @@ playGame.prototype = {
     },
 
     populateWorld: function () {
-        // groups
+        
         this.enemies = game.add.group();
         this.enemies.enableBody = true;
-        //
+        
         this.items = game.add.group();
         this.items.enableBody = true;
 
-        //timer for frog jumps
         frogTimer = game.time.create(false);
         frogTimer.loop(2000, this.switchFrogJump, this);
         frogTimer.start();
 
-        // create items
         this.createCherry(30, 5);
         this.createCherry(31, 5);
         this.createCherry(32, 5);
-        //
+        
         this.createCherry(23, 17);
         this.createCherry(24, 17);
         this.createCherry(25, 17);
-        //
+        
         this.createGem(3, 6);
         this.createGem(4, 6);
         this.createGem(5, 6);
-        //
+        
         this.createGem(44, 12);
         this.createGem(42, 13);
         this.createGem(42, 16);
-
-        // create enemies
 
         this.createFrog(15, 9);
         this.createFrog(30, 20);
@@ -207,15 +203,15 @@ playGame.prototype = {
     },
 
     createWorld: function () {
-        // tilemap
+        
         this.map = game.add.tilemap('map');
         this.map.addTilesetImage('tileset');
         this.layer = this.map.createLayer('Tile Layer 1');
         this.layer.resizeWorld();
-        // which tiles collide
-        this.map.setCollision([27, 29, 31, 33, 35, 37, 77, 81, 86, 87, 127, 129, 131, 133, 134, 135, 83, 84, 502, 504, 505, 529, 530, 333, 335, 337, 339, 366, 368, 262, 191, 193, 195, 241, 245, 291, 293, 295,]);
-        // set some tiles one way collision
-        this.setTopCollisionTiles(35);
+
+	this.map.setCollision([27, 29, 31, 33, 35, 37, 77, 81, 86, 87, 127, 129, 131, 133, 134, 135, 83, 84, 502, 504, 505, 529, 530, 333, 335, 337, 339, 366, 368, 262, 191, 193, 195, 241, 245, 291, 293, 295,]);
+
+	this.setTopCollisionTiles(35);
         this.setTopCollisionTiles(36);
         this.setTopCollisionTiles(84);
         this.setTopCollisionTiles(86);
@@ -250,8 +246,8 @@ playGame.prototype = {
         game.physics.arcade.enable(this.player);
         this.player.body.gravity.y = 500;
         this.player.body.setSize(12, 16, 8, 16);
-        //add animations
-        var animVel = 15;
+
+	var animVel = 15;
         this.player.animations.add('idle', Phaser.Animation.generateFrameNames('player/idle/player-idle-', 1, 4, '', 0), animVel - 3, true);
         this.player.animations.add('run', Phaser.Animation.generateFrameNames('player/run/player-run-', 1, 6, '', 0), animVel, true);
         this.player.animations.add('jump', ['player/jump/player-jump-1'], 1, false);
@@ -259,7 +255,7 @@ playGame.prototype = {
         this.player.animations.add('crouch', Phaser.Animation.generateFrameNames('player/crouch/player-crouch-', 1, 2, '', 0), 10, true);
         this.player.animations.add('hurt', Phaser.Animation.generateFrameNames('player/hurt/player-hurt-', 1, 2, '', 0), animVel, true);
         this.player.animations.play('idle');
-        // timer
+        
         hurtTimer = game.time.create(false);
         hurtTimer.loop(500, this.resetHurt, this);
     },
@@ -295,8 +291,8 @@ playGame.prototype = {
         game.physics.arcade.enable(temp);
         temp.body.gravity.y = 500;
         temp.body.setSize(16, 13, 8, 15);
-        //add animations
-        temp.animations.add('run', Phaser.Animation.generateFrameNames('opossum/opossum-', 1, 6, '', 0), 12, true);
+
+	temp.animations.add('run', Phaser.Animation.generateFrameNames('opossum/opossum-', 1, 6, '', 0), 12, true);
         temp.animations.play('run');
         temp.body.velocity.x = 60 * game.rnd.pick([1, -1]);
         temp.body.bounce.x = 1;
@@ -312,10 +308,10 @@ playGame.prototype = {
         temp.anchor.setTo(0.5);
         game.physics.arcade.enable(temp);
         temp.body.setSize(16, 13, 8, 20);
-        //add animations
-        temp.animations.add('attack', Phaser.Animation.generateFrameNames('eagle/eagle-attack-', 1, 4, '', 0), 12, true);
+
+	temp.animations.add('attack', Phaser.Animation.generateFrameNames('eagle/eagle-attack-', 1, 4, '', 0), 12, true);
         temp.animations.play('attack');
-        // tweens
+        
         var VTween = game.add.tween(temp).to({
             y: y + 50
         }, 1000, Phaser.Easing.Linear.None, true, 0, -1);
@@ -333,7 +329,7 @@ playGame.prototype = {
         game.physics.arcade.enable(temp);
         temp.body.gravity.y = 500;
         temp.body.setSize(16, 16, 8, 11);
-        //add animations
+        
         temp.animations.add('idle', Phaser.Animation.generateFrameNames('frog/idle/frog-idle-', 1, 4, '', 0), 6, true);
         temp.animations.add('jump', ['frog/jump/frog-jump-1'], 6, false);
         temp.animations.add('fall', ['frog/jump/frog-jump-2'], 6, false);
@@ -350,7 +346,7 @@ playGame.prototype = {
         var temp = game.add.sprite(x, y, 'atlas', 'cherry/cherry-1');
         temp.anchor.setTo(0.5);
         game.physics.arcade.enable(temp);
-        //add animations
+        
         temp.animations.add('idle', Phaser.Animation.generateFrameNames('cherry/cherry-', 1, 7, '', 0), 12, true);
         temp.animations.play('idle');
 
@@ -363,7 +359,7 @@ playGame.prototype = {
         var temp = game.add.sprite(x, y, 'atlas', 'gem/gem-1');
         temp.anchor.setTo(0.5);
         game.physics.arcade.enable(temp);
-        //add animations
+        
         temp.animations.add('idle', Phaser.Animation.generateFrameNames('gem/gem-', 1, 5, '', 0), 12, true);
         temp.animations.play('idle');
 
@@ -371,8 +367,8 @@ playGame.prototype = {
     },
 
     update: function () {
-        //this.debugGame();
-        game.physics.arcade.collide(this.player, this.layer);
+        
+	game.physics.arcade.collide(this.player, this.layer);
         game.physics.arcade.collide(this.enemies, this.layer);
         game.physics.arcade.overlap(this.player, this.enemies, this.checkAgainstEnemies, null, this);
         game.physics.arcade.overlap(this.player, this.items, this.pickItem, null, this);
@@ -392,7 +388,7 @@ playGame.prototype = {
 
             var tempEnemy = this.enemies.children[i];
 
-            // opossum
+            //опоссум
             if (tempEnemy.enemyType == 'opossum') {
                 if (tempEnemy.body.velocity.x < 0) {
                     tempEnemy.scale.x = 1;
@@ -401,7 +397,7 @@ playGame.prototype = {
                 }
             }
 
-            // eagle
+            //орел
             if (tempEnemy.enemyType == 'eagle') {
                 if (tempEnemy.x > this.player.x) {
                     tempEnemy.scale.x = 1;
@@ -410,7 +406,7 @@ playGame.prototype = {
                 }
             }
 
-            // frog
+            //лягушка
             if (tempEnemy.enemyType == 'frog') {
                 if (tempEnemy.side == 'left' && frogJumpSide == 'right') {
                     tempEnemy.scale.x = 1;
@@ -425,7 +421,7 @@ playGame.prototype = {
                 } else if (tempEnemy.body.onFloor()) {
                     tempEnemy.body.velocity.x = 0;
                 }
-                // animations
+                //анимация
                 if (tempEnemy.body.velocity.y < 0) {
                     tempEnemy.animations.play('jump');
                 } else if (tempEnemy.body.velocity.y > 0) {
@@ -509,7 +505,7 @@ playGame.prototype = {
 
         }
 
-        // jump animation
+
         if (this.player.body.velocity.y < 0) {
             this.player.animations.play('jump');
         } else if (this.player.body.velocity.y > 0) {
