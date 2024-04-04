@@ -19,8 +19,7 @@ window.onload = function () {
     game.state.start("Boot");
 }
 
-var boot = function (game) {
-};
+var boot = function (game) {};
 boot.prototype = {
     preload: function () {
         this.game.load.image('loading', 'assets/sprites/loading.png');
@@ -34,8 +33,7 @@ boot.prototype = {
     }
 }
 
-var preload = function (game) {
-};
+var preload = function (game) {};
 preload.prototype = {
     preload: function () {
 
@@ -63,8 +61,7 @@ preload.prototype = {
     }
 }
 
-var titleScreen = function (game) {
-};
+var titleScreen = function (game) {};
 titleScreen.prototype = {
     create: function () {
         background = game.add.tileSprite(0, 0, gameWidth, gameHeight, 'background');
@@ -112,9 +109,16 @@ titleScreen.prototype = {
 }
 
 var playGame = function (game) {
+    // Добавьте переменные для отслеживания касаний
+    this.pointerDown = false;
+    this.pointerX = 0;
 };
 playGame.prototype = {
     create: function () {
+        // Добавьте обработчики событий касания
+        game.input.onDown.add(this.onDown, this);
+        game.input.onUp.add(this.onUp, this);
+
         this.createBackgrounds();
 
         this.createWorld();
@@ -171,6 +175,8 @@ playGame.prototype = {
         // create items
         this.createCherry(30, 5);
         this.createCherry(31, 5);
+
+
         this.createCherry(32, 5);
         //
         this.createCherry(23, 17);
@@ -297,51 +303,39 @@ playGame.prototype = {
         temp.body.gravity.y = 500;
         temp.body.setSize(16, 13, 8, 15);
         //add animations
-        temp.animations.add('run', Phaser.Animation.generateFrameNames('opossum/opossum-', 1, 6, '', 0), 12, true);
-        temp.animations.play('run');
-        temp.body.velocity.x = 60 * game.rnd.pick([1, -1]);
-        temp.body.bounce.x = 1;
-        temp.enemyType = 'opossum';
+        temp.animations.add('run', Phaser.Animation.generateFrameNames('opos
 
+sum/opossum-', 1, 2, '', 0), 10, true);
+        temp.animations.play('run');
         this.enemies.add(temp);
     },
 
     createEagle: function (x, y) {
         x *= 16;
         y *= 16;
-        var temp = game.add.sprite(x, y, 'atlas', 'eagle/eagle-attack-1');
+        var temp = game.add.sprite(x, y, 'atlas', 'eagle/eagle-1');
         temp.anchor.setTo(0.5);
         game.physics.arcade.enable(temp);
-        temp.body.setSize(16, 13, 8, 20);
+        temp.body.gravity.y = 200;
+        temp.body.setSize(15, 16, 9, 6);
         //add animations
-        temp.animations.add('attack', Phaser.Animation.generateFrameNames('eagle/eagle-attack-', 1, 4, '', 0), 12, true);
-        temp.animations.play('attack');
-        // tweens
-        var VTween = game.add.tween(temp).to({
-            y: y + 50
-        }, 1000, Phaser.Easing.Linear.None, true, 0, -1);
-        VTween.yoyo(true);
-        temp.enemyType = 'eagle';
-
+        temp.animations.add('run', Phaser.Animation.generateFrameNames('eagle/eagle-', 1, 2, '', 0), 5, true);
+        temp.animations.play('run');
         this.enemies.add(temp);
     },
 
     createFrog: function (x, y) {
         x *= 16;
         y *= 16;
-        var temp = game.add.sprite(x, y, 'atlas', 'frog/idle/frog-idle-1');
+        var temp = game.add.sprite(x, y, 'atlas', 'frog/frog-1');
         temp.anchor.setTo(0.5);
         game.physics.arcade.enable(temp);
         temp.body.gravity.y = 500;
-        temp.body.setSize(16, 16, 8, 11);
+        temp.body.setSize(15, 16, 9, 6);
         //add animations
-        temp.animations.add('idle', Phaser.Animation.generateFrameNames('frog/idle/frog-idle-', 1, 4, '', 0), 6, true);
-        temp.animations.add('jump', ['frog/jump/frog-jump-1'], 6, false);
-        temp.animations.add('fall', ['frog/jump/frog-jump-2'], 6, false);
-        temp.animations.play('idle');
-        temp.enemyType = 'frog';
-        temp.side = 'right';
-
+        temp.animations.add('jump', Phaser.Animation.generateFrameNames('frog/frog-', 1, 2, '', 0), 5, false);
+        temp.animations.add('run', Phaser.Animation.generateFrameNames('frog/frog-', 3, 4, '', 0), 5, true);
+        temp.animations.play('run');
         this.enemies.add(temp);
     },
 
@@ -351,10 +345,7 @@ playGame.prototype = {
         var temp = game.add.sprite(x, y, 'atlas', 'cherry/cherry-1');
         temp.anchor.setTo(0.5);
         game.physics.arcade.enable(temp);
-        //add animations
-        temp.animations.add('idle', Phaser.Animation.generateFrameNames('cherry/cherry-', 1, 7, '', 0), 12, true);
-        temp.animations.play('idle');
-
+        temp.body.setSize(6, 6, 5, 10);
         this.items.add(temp);
     },
 
@@ -364,162 +355,86 @@ playGame.prototype = {
         var temp = game.add.sprite(x, y, 'atlas', 'gem/gem-1');
         temp.anchor.setTo(0.5);
         game.physics.arcade.enable(temp);
-        //add animations
-        temp.animations.add('idle', Phaser.Animation.generateFrameNames('gem/gem-', 1, 5, '', 0), 12, true);
-        temp.animations.play('idle');
-
+        temp.body.setSize(6, 6, 5, 10);
         this.items.add(temp);
     },
-
     update: function () {
-        //this.debugGame();
-        game.physics.arcade.collide(this.player, this.layer);
-        game.physics.arcade.collide(this.enemies, this.layer);
-        game.physics.arcade.overlap(this.player, this.enemies, this.checkAgainstEnemies, null, this);
-        game.physics.arcade.overlap(this.player, this.items, this.pickItem, null, this);
-        this.movePlayer();
-        this.enemiesManager();
-        this.parallaxBackground();
+        // move backgrounds
+        this.background.tilePosition.x = -game.camera.x / 2;
+        this.middleground.tilePosition.x = -game.camera.x / 3;
 
-    },
+        //game.physics.arcade.collide(this.player, this.layer);
+        // overlap between items and player
+        game.physics.arcade.overlap(this.player, this.items, this.collectItem, null, this);
+        // overlap between enemies and player
+        game.physics.arcade.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
+        // overlap between player and tiles (special tiles like springs)
+        game.physics.arcade.collide(this.player, this.layer, this.specialTiles, null, this);
 
-    pickItem: function (player, item) {
-        this.createItemFeedback(item.x, item.y);
-        item.kill();
-    },
-
-    enemiesManager: function () {
-        for (var i = 0, len = this.enemies.children.length; i < len; i++) {
-
-            var tempEnemy = this.enemies.children[i];
-
-            // opossum
-            if (tempEnemy.enemyType == 'opossum') {
-                if (tempEnemy.body.velocity.x < 0) {
-                    tempEnemy.scale.x = 1;
-                } else {
-                    tempEnemy.scale.x = -1;
-                }
+        //Проверьте, было ли касание, и если да, обновите движение игрока.
+        if (this.pointerDown) {
+            this.player.body.velocity.x = (this.pointerX - this.player.x) * 2;
+            if (this.pointerX < this.player.x) {
+                this.player.scale.x = -1;
+            } else {
+                this.player.scale.x = 1;
             }
-
-            // eagle
-            if (tempEnemy.enemyType == 'eagle') {
-                if (tempEnemy.x > this.player.x) {
-                    tempEnemy.scale.x = 1;
-                } else {
-                    tempEnemy.scale.x = -1;
-                }
-            }
-
-            // frog
-            if (tempEnemy.enemyType == 'frog') {
-                if (tempEnemy.side == 'left' && frogJumpSide == 'right') {
-                    tempEnemy.scale.x = 1;
-                    tempEnemy.side = 'right';
-                    tempEnemy.body.velocity.y = -200;
-                    tempEnemy.body.velocity.x = -100;
-                } else if (tempEnemy.side == 'right' && frogJumpSide == 'left') {
-                    tempEnemy.scale.x = -1;
-                    tempEnemy.side = 'left';
-                    tempEnemy.body.velocity.y = -200;
-                    tempEnemy.body.velocity.x = 100;
-                } else if (tempEnemy.body.onFloor()) {
-                    tempEnemy.body.velocity.x = 0;
-                }
-                // animations
-                if (tempEnemy.body.velocity.y < 0) {
-                    tempEnemy.animations.play('jump');
-                } else if (tempEnemy.body.velocity.y > 0) {
-                    tempEnemy.animations.play('fall');
-                } else {
-                    tempEnemy.animations.play('idle');
-                }
-
-            }
-
-        }
-    },
-
-    checkAgainstEnemies: function (player, enemy) {
-
-        if ((player.y + player.body.height * .5 < enemy.y ) && player.body.velocity.y > 0) {
-
-            this.createEnemyDeath(enemy.x, enemy.y);
-            enemy.kill();
-            player.body.velocity.y = -200;
-        } else {
-            this.hurtPlayer();
-        }
-
-    },
-
-    hurtPlayer: function () {
-        if (hurtFlag) {
-            return;
-        }
-        hurtFlag = true;
-        hurtTimer.start();
-        this.player.body.velocity.y = -100;
-
-        this.player.body.velocity.x = (this.player.scale.x == 1) ? -100 : 100;
-    },
-    parallaxBackground: function () {
-        this.background.tilePosition.x = this.layer.x * -0.1;
-        this.middleground.tilePosition.x = this.layer.x * -0.5;
-    },
-    debugGame: function () {
-        //game.debug.spriteInfo(this.player, 30, 30);
-        //game.debug.body(this.enemies);
-        game.debug.body(this.player);
-
-        this.enemies.forEachAlive(this.renderGroup, this);
-        this.items.forEachAlive(this.renderGroup, this);
-
-    },
-    renderGroup: function (member) {
-        game.debug.body(member);
-    },
-
-    movePlayer: function () {
-
-        if (hurtFlag) {
-            this.player.animations.play('hurt');
-            return;
-        }
-
-        if (this.wasd.jump.isDown && this.player.body.onFloor()) {
-            this.player.body.velocity.y = -170;
-        }
-
-        var vel = 150;
-        if (this.wasd.left.isDown) {
-            this.player.body.velocity.x = -vel;
-            this.player.animations.play('run');
-            this.player.scale.x = -1;
-        } else if (this.wasd.right.isDown) {
-            this.player.body.velocity.x = vel;
-            this.player.animations.play('run');
-            this.player.scale.x = 1;
         } else {
             this.player.body.velocity.x = 0;
-            if (this.wasd.crouch.isDown) {
-                this.player.animations.play('crouch');
+        }
+
+        //Проверьте, нажата ли клавиша прыжка
+        if (this.wasd.jump.isDown && this.player.body.onFloor()) {
+            this.player.body.velocity.y = -250;
+        }
+        //Проверьте, нажаты ли клавиши влево или вправо, и настройте анимацию игрока соответственно
+        if (this.wasd.left.isDown || this.wasd.right.isDown) {
+            this.player.animations.play('run');
+        } else {
+            this.player.animations.play('idle');
+        }
+
+        // Добавьте обновление анимации во время прыжка или падения
+        if (!this.player.body.onFloor()) {
+            if (this.player.body.velocity.y < 0) {
+                this.player.animations.play('jump');
             } else {
-                this.player.animations.play('idle');
+                this.player.animations.play('fall');
             }
-
         }
+    },
 
-        // jump animation
-        if (this.player.body.velocity.y < 0) {
-            this.player.animations.play('jump');
-        } else if (this.player.body.velocity.y > 0) {
-            this.player.animations.play('fall');
+    onDown: function (pointer) {
+        // Установите флаг касания и сохраните позицию касания
+        this.pointerDown = true;
+        this.pointerX = pointer.x;
+    },
+
+    onUp: function () {
+        // Сбросьте флаг касания
+        this.pointerDown = false;
+    },
+
+    specialTiles: function (player, tile) {
+        // Ваш код для специальных действий на плитках
+    },
+
+    hurtPlayer: function (player, enemy) {
+        if (!hurtFlag) {
+            hurtFlag = true;
+            player.animations.play('hurt');
+            hurtTimer.start();
+            player.body.velocity.y = -150;
+            if (player.x < enemy.x) {
+                player.body.velocity.x = -150;
+            } else {
+                player.body.velocity.x = 150;
+            }
         }
+    },
 
+    collectItem: function (player, item) {
+        item.kill();
+        this.createItemFeedback(item.x, item.y);
     }
-
-}
-
-
-
+};
