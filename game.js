@@ -16,7 +16,7 @@ window.onload = function () {
     game.state.add('TitleScreen', titleScreen);
     game.state.add('PlayGame', playGame);
     //
-    game.state.start("Boot");
+    game.state.start("Boot"); 
 }
 
 var boot = function (game) {
