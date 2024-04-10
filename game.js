@@ -43,7 +43,7 @@ preload.prototype = {
         loadingBar.anchor.setTo(0.5);
         game.load.setPreloadSprite(loadingBar);
 
-	game.load.image('title', 'assets/sprites/title-screen.png');
+	game.load.image('title', 'assets/sprites/title-screen.svg');
         game.load.image('enter', 'assets/sprites/press-enter-text.png');
 
 	game.load.image('background', 'assets/environment/back.png');
